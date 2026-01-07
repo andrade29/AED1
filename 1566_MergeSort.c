@@ -1,63 +1,69 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Função para fazer o merge de duas sublistas
-void merge(int arr[], int l, int m, int r) {
-    int n1 = m - l + 1;
-    int n2 = r - m;
+// merge de duas listas
+void merge(int vetor[], int esq, int meio, int dir) {
+    int tamEsq = meio - esq + 1;
+    int tamDir = dir - meio;
 
-    int *L = (int*) malloc(n1 * sizeof(int));
-    int *R = (int*) malloc(n2 * sizeof(int));
+    int *vetEsq = (int*) malloc(tamEsq * sizeof(int));
+    int *vetDir = (int*) malloc(tamDir * sizeof(int));
 
-    for (int i = 0; i < n1; i++) L[i] = arr[l + i];
-    for (int i = 0; i < n2; i++) R[i] = arr[m + 1 + i];
+    for (int i = 0; i < tamEsq; i++) vetEsq[i] = vetor[esq + i];
+    for (int i = 0; i < tamDir; i++) vetDir[i] = vetor[meio + 1 + i];
 
-    int i = 0, j = 0, k = l;
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) arr[k++] = L[i++];
-        else arr[k++] = R[j++];
+    int i = 0, j = 0, k = esq;
+
+    // loop que intercala mas mantem a ordem
+    while (i < tamEsq && j < tamDir) {
+        if (vetEsq[i] <= vetDir[j])
+            vetor[k++] = vetEsq[i++];
+        else
+            vetor[k++] = vetDir[j++];
     }
 
-    while (i < n1) arr[k++] = L[i++];
-    while (j < n2) arr[k++] = R[j++];
+    // copia os elementos restantes
+    while (i < tamEsq) vetor[k++] = vetEsq[i++];
+    while (j < tamDir) vetor[k++] = vetDir[j++];
 
-    free(L);
-    free(R);
+    free(vetEsq);
+    free(vetDir);
 }
 
-
-void mergeSort(int arr[], int l, int r) {
-    if (l < r) {
-        int m = l + (r - l) / 2;
-        mergeSort(arr, l, m);
-        mergeSort(arr, m + 1, r);
-        merge(arr, l, m, r);
+// funcao mergeSort
+void mergeSort(int vetor[], int esq, int dir) {
+    if (esq < dir) {
+        int meio = esq + (dir - esq) / 2;
+        mergeSort(vetor, esq, meio);
+        mergeSort(vetor, meio + 1, dir);
+        merge(vetor, esq, meio, dir);
     }
 }
 
 int main() {
-    int casos;
+    int casos;  // casos testes
     scanf("%d", &casos);
 
+    // loop para cada caso
     while (casos--) {
-        int pessoas;
+        int pessoas;     
         scanf("%d", &pessoas);
 
+        // aloca o vetor e depois le os valores de altura
         int *alturas = (int*) malloc(pessoas * sizeof(int));
         for (int i = 0; i < pessoas; i++) {
             scanf("%d", &alturas[i]);
         }
-
+        // ordena usando mergesort
         mergeSort(alturas, 0, pessoas - 1);
 
+        // imprime o vetor ordenado
         for (int i = 0; i < pessoas; i++) {
             printf("%d", alturas[i]);
             if (i < pessoas - 1) printf(" ");
         }
         printf("\n");
-
         free(alturas);
     }
-
-    return 0;
+    return 0;  
 }
