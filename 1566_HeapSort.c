@@ -1,65 +1,70 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//ajusta o max heap
-void heapify(int arr[], int n, int i) {
-    int largest = i;      // raiz
-    int l = 2*i + 1;      // filho esquerdo
-    int r = 2*i + 2;      // filho direito
+// max heap inicia em i
+void heapify(int vetor[], int n, int i) {
+    int maior = i;      // maior elemento
+    int esq = 2*i + 1;     
+    int dir = 2*i + 2;      
 
-    if (l < n && arr[l] > arr[largest])
-        largest = l;
+    // esq é maior?
+    if (esq < n && vetor[esq] > vetor[maior])
+        maior = esq;
 
-    if (r < n && arr[r] > arr[largest])
-        largest = r;
+    // dir é maior?
+    if (dir < n && vetor[dir] > vetor[maior])
+        maior = dir;
 
-    if (largest != i) {
-        int temp = arr[i];
-        arr[i] = arr[largest];
-        arr[largest] = temp;
+    // raiz != de maior, continua mudando
+    if (maior != i) {
+        int temp = vetor[i];
+        vetor[i] = vetor[maior];
+        vetor[maior] = temp;
 
-        heapify(arr, n, largest);
+        heapify(vetor, n, maior);
     }
 }
 
-//função heapSort
-void heapSort(int arr[], int n) {
-    //max heap
+// funcao heap
+void heapSort(int vetor[], int n) {
+    // for para o max heap
     for (int i = n/2 - 1; i >= 0; i--)
-        heapify(arr, n, i);
+        heapify(vetor, n, i);
 
-    // Extrair elementos do heap um por um
+    // remove um a um
     for (int i = n-1; i > 0; i--) {
-    
-        int temp = arr[0];
-        arr[0] = arr[i];
-        arr[i] = temp;
-        heapify(arr, i, 0);
+        int temp = vetor[0];
+        vetor[0] = vetor[i];
+        vetor[i] = temp;
+
+        heapify(vetor, i, 0);
     }
 }
 
 int main() {
-    int casos;
+    int casos;  // numero de casos testes
     scanf("%d", &casos);
 
     while (casos--) {
-        int pessoas;
+        int pessoas; 
         scanf("%d", &pessoas);
 
+        // alocando
         int *alturas = (int*) malloc(pessoas * sizeof(int));
         for (int i = 0; i < pessoas; i++)
             scanf("%d", &alturas[i]);
 
+        // heap ordena as alturas
         heapSort(alturas, pessoas);
 
+        // for para imprimir de forma ordenada
         for (int i = 0; i < pessoas; i++) {
             printf("%d", alturas[i]);
             if (i < pessoas - 1) printf(" ");
         }
         printf("\n");
-
-        free(alturas);
+        free(alturas);  
     }
 
-    return 0;
+    return 0;  
 }
