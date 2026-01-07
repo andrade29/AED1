@@ -22,7 +22,7 @@ No* insere(No* r, int h) {
     if (!r) return novoNo(h);
 
     if (h == r->h) {
-        r->freq++;                 // aqui se o valor existe ele incrementa
+        r->freq++;   // aqui se o valor existe ele incrementa
     } else if (h < r->h) {
         r->esq = insere(r->esq, h);
     } else {
@@ -79,3 +79,4 @@ int main() {
 
     return 0;
 }
+
