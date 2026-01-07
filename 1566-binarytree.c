@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// struct de uma arvore
 typedef struct no {
-    int h, freq;
-    struct no *esq, *dir;
+    int h;                 
+    int freq;              
+    struct no *esq, *dir; 
 } No;
 
+// nó armazenado dinamicamente 
 No* novoNo(int h) {
     No* n = (No*)malloc(sizeof(No));
     n->h = h;
@@ -14,10 +17,12 @@ No* novoNo(int h) {
     return n;
 }
 
+// funcao insere valor na arvore
 No* insere(No* r, int h) {
     if (!r) return novoNo(h);
+
     if (h == r->h) {
-        r->freq++;
+        r->freq++;                 // aqui se o valor existe ele incrementa
     } else if (h < r->h) {
         r->esq = insere(r->esq, h);
     } else {
@@ -26,6 +31,7 @@ No* insere(No* r, int h) {
     return r;
 }
 
+// funcao imprime
 void imprime(No* r, int *primeiro) {
     if (!r) return;
     imprime(r->esq, primeiro);
@@ -42,6 +48,7 @@ void imprime(No* r, int *primeiro) {
     imprime(r->dir, primeiro);
 }
 
+// funcao libera
 void libera(No* r) {
     if (!r) return;
     libera(r->esq);
@@ -50,25 +57,24 @@ void libera(No* r) {
 }
 
 int main() {
-    int NC;
+    int NC;  // nc representa os casos testes
     scanf("%d", &NC);
 
     while (NC--) {
         int N, x;
         scanf("%d", &N);
+        No* raiz = NULL;  // raiz == null
 
-        No* raiz = NULL;
-
+        // for para inserir os valores
         for (int i = 0; i < N; i++) {
             scanf("%d", &x);
             raiz = insere(raiz, x);
         }
 
-        int primeiro = 1;
+        int primeiro = 1;  
         imprime(raiz, &primeiro);
-
         printf("\n");
-        libera(raiz);
+        libera(raiz);      
     }
 
     return 0;
