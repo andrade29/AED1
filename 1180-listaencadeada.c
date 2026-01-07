@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+// estutura de nó
 typedef struct NO{
     int valor;
     struct NO *prox;
@@ -9,14 +9,14 @@ typedef struct NO{
 int main() {
     int N, i;
     scanf("%d", &N);
-
+    //inicializa ponteiros
     NO *inicio = NULL;
     NO *atual = NULL;
 
     for (i = 0; i < N; i++) {
         int num;
         scanf("%d", &num);
-
+        //alocando dinamicamnete um nó
         NO *novo = (NO*)malloc(sizeof(NO));
         novo->valor = num;
         novo->prox = NULL;
@@ -57,3 +57,4 @@ int main() {
 
     return 0;
 }
+
